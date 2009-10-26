@@ -1,7 +1,6 @@
 class Store
 end
 
-
 # patch activerdf to run plain sparql queries
 class Query2SPARQL
   def self.translate(query, engine=nil)

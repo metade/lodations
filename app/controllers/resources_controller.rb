@@ -2,7 +2,6 @@ class ResourcesController < ApplicationController
   def show
     uri = params[:id]
         
-    # p STORE.load(uri)
     resource = RDFS::Resource.new(uri)
     
     CannedQuery.find(:all).each do |query|
