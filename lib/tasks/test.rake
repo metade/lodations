@@ -8,7 +8,7 @@ task :play => :environment do
     :title => 'using dbpedia:homeTown',
     :endpoint => endpoint,
     :sparql => %[
-      SELECT ?input_name, ?output_name, ?place_name
+      SELECT ?input_name, ?OUTPUT, ?output_name, ?place_name
           WHERE {
             @INPUT <http://dbpedia.org/ontology/homeTown> ?place .
             @INPUT <http://xmlns.com/foaf/0.1/name> ?input_name .
@@ -19,7 +19,7 @@ task :play => :environment do
             FILTER ( langMATCHES( lang(?place_name), 'en'))
           }    
     ],
-    :template => '<%= result[0] %> and <%= result[1] %> are both based in <%= result[2] %>'
+    :template => '<%= result[0] %> and <a href="/resources/<%= result[1].uri %>"><%= result[2] %></a> are both based in <%= result[3] %>'
   )
   
   idea = Idea.create(:title => 'Artists signed to the same independent record label')
@@ -44,7 +44,7 @@ task :play => :environment do
               )
             }
      ],
-    :template => '<%= result[0] %> and <%= result[1] %> were both signed on <%= result[2] %>. <%= result[3] %>'
+    :template => '<%= result[0] %> and <a href="/resources/<%= result[1].uri %>"><%= result[2] %></a> were both signed on <%= result[3] %>. <%= result[4] %>'
   )
   
   idea = Idea.create(:title => 'artists born in the same year?')

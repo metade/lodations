@@ -80,7 +80,7 @@ class CannedQueriesController < ApplicationController
     @query.destroy
 
     respond_to do |format|
-      format.html { redirect_to(queries_url) }
+      format.html { redirect_to(idea_url(@idea)) }
       format.xml  { head :ok }
     end
   end

@@ -4,6 +4,7 @@ class CannedQuery < ActiveRecord::Base
   
   def execute(resource)
     sparql = self.sparql.gsub('@INPUT', "<#{resource.uri}>")
+    puts sparql
     results = endpoint.execute(sparql)
     
     unless results.empty?

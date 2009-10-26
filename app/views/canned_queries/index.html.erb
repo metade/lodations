@@ -8,13 +8,13 @@
 <% @queries.each do |query| %>
   <tr>
     <td><%=h query.sparql %></td>
-    <td><%= link_to 'Show', query %></td>
-    <td><%= link_to 'Edit', edit_query_path(query) %></td>
-    <td><%= link_to 'Destroy', query, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', idea_canned_query_path(@idea, query) %></td>
+    <td><%= link_to 'Edit', edit_idea_canned_query_path(@idea, query) %></td>
+    <td><%= link_to 'Destroy', idea_canned_query_path(@idea, query), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New query', new_query_path %>
+<%= link_to 'New query', new_idea_canned_query_path %>
