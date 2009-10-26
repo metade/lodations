@@ -46,4 +46,6 @@ task :play => :environment do
     :template => '<%= result[0] %> and <%= result[1] %> were both signed on <%= result[2] %>. <%= result[3] %>'
   )
   
+  idea = Idea.create(:tite => 'artists born in the same year?')
+  
 end

@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :resources, :requirements => { :id => /(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?/ix
   }
   
+  map.root :controller => 'pages'
+  
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action
