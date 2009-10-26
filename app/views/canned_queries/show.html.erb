@@ -1,8 +1,12 @@
 <p>
   <b>Sparql:</b>
-  <%=h @query.sparql %>
+  <pre><%=h @query.sparql %></pre>
 </p>
 
+<p>
+  <b>Template:</b>
+  <%=h @query.template %>
+</p>
 
 <%= link_to 'Edit', edit_idea_canned_query_path(@query) %> |
-<%= link_to 'Back', idea_canned_queries_path(@idea) %>
+<%= link_to 'Back', idea_path(@idea) %>

@@ -8,8 +8,8 @@ class Query2SPARQL
     str = ""
     if query.select?
       distinct = query.distinct? ? "DISTINCT " : ""
-			select_clauses = query.select_clauses.collect{|s| construct_clause(s)}
-
+      select_clauses = query.select_clauses.collect{|s| construct_clause(s)}
+      
       str << "SELECT #{distinct}#{select_clauses.join(' ')} "
       str << "WHERE { #{where_clauses(query)} #{filter_clauses(query)}} "
       str << "LIMIT #{query.limits} " if query.limits

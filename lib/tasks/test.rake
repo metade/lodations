@@ -7,17 +7,17 @@ task :play => :environment do
     :title => 'foo',
     :endpoint => endpoint,
     :sparql => %[
-      SELECT *
+      SELECT ?input_name, ?output_name, ?place_name
           WHERE {
             @INPUT <http://dbpedia.org/ontology/homeTown> ?place .
-            @INPUT <http://dbpedia.org/property/name> ?input_name .
+            @INPUT <http://xmlns.com/foaf/0.1/name> ?input_name .
             ?place rdfs:label ?place_name .
             ?OUTPUT <http://dbpedia.org/ontology/homeTown> ?place .
-            ?OUTPUT <http://dbpedia.org/property/name> ?output_name .
+            ?OUTPUT <http://xmlns.com/foaf/0.1/name> ?output_name .
             FILTER (@INPUT != ?OUTPUT)
-            FILTER ( langMATCHES( lang(?place_name), 'en') )
-          }
+            FILTER ( langMATCHES( lang(?place_name), 'en'))
+          }    
     ],
-    :template => '<%= result["input_name"] %> and <%= result["output_name"] %> are both based in Detroit'
+    :template => '<%= result[0] %> and <%= result[1] %> are both based in <%= result[2] %>'
   )
 end

@@ -42,7 +42,7 @@ class CannedQueriesController < ApplicationController
   # POST /queries
   # POST /queries.xml
   def create
-    @query = CannedQuery.new(params[:query])
+    @query = CannedQuery.new(params[:canned_query])
 
     respond_to do |format|
       if @query.save
@@ -62,9 +62,9 @@ class CannedQueriesController < ApplicationController
     @query = CannedQuery.find(params[:id])
 
     respond_to do |format|
-      if @query.update_attributes(params[:query])
+      if @query.update_attributes(params[:canned_query])
         flash[:notice] = 'Query was successfully updated.'
-        format.html { redirect_to(canned_quer@query) }
+        format.html { redirect_to(idea_canned_query_path(@idea, @query)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
