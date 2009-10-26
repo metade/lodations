@@ -5,7 +5,7 @@ class CreateCannedQueries < ActiveRecord::Migration
       t.integer :endpoint_id
       
       t.string :title
-      t.string :sparql
+      t.text :sparql
       t.string :template
       t.string :variables
 
