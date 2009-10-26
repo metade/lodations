@@ -46,6 +46,15 @@ task :play => :environment do
     :template => '<%= result[0] %> and <%= result[1] %> were both signed on <%= result[2] %>. <%= result[3] %>'
   )
   
-  idea = Idea.create(:tite => 'artists born in the same year?')
-  
+  idea = Idea.create(:title => 'artists born in the same year?')
+  idea = Idea.create(:title => 'artists born on the same day?')
+  idea = Idea.create(:title => 'artists who played the same venues or festival?', :description => 'eg woodstock')
+  idea = Idea.create(:title => 'Artist who have used the same producer')
+  idea = Idea.create(:title => 'Artist who have used the same session artists', :description => 'what have Gram Parsons and Elvis Presley got in common? Glen Hardin - http://en.wikipedia.org/wiki/Glen_Hardin')
+  idea = Idea.create(:title => 'Artist who have used the same LP sleeve artist')
+  idea = Idea.create(:title => 'Artist who have appeared on same film soundtrack')
+  idea = Idea.create(:title => 'artists who have used the same studio')
+  idea = Idea.create(:title => 'artists who have used the same arranger(s)')
+  idea = Idea.create(:title => 'artists with same management or management company', :description => 'witchseason would be
+a good example')
 end
