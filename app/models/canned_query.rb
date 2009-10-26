@@ -6,7 +6,9 @@ class CannedQuery < ActiveRecord::Base
     sparql = self.sparql.gsub('@INPUT', "<#{resource.uri}>")
     results = endpoint.execute(sparql)
     
-    result = results.rand
-    ERB.new(template).result(binding)
+    unless results.empty?
+      result = results.rand
+      ERB.new(template).result(binding)
+    end
   end
 end

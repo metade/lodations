@@ -47,7 +47,7 @@ class CannedQueriesController < ApplicationController
     respond_to do |format|
       if @query.save
         flash[:notice] = 'Query was successfully created.'
-        format.html { redirect_to(@query) }
+        format.html { redirect_to(idea_canned_query_url(@idea, @query)) }
         format.xml  { render :xml => @query, :status => :created, :location => @query }
       else
         format.html { render :action => "new" }

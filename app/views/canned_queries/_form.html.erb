@@ -9,3 +9,8 @@
   <%= form.label :template %><br />
   <%= form.text_field :template %>
 </p>
+<p>
+  <%= form.label :endpoint %><br />
+  <%= form.select(:endpoint_id, Endpoint.all.collect {|p| [ p.title, p.id ] }) %>
+</p>
+

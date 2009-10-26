@@ -2,9 +2,9 @@
 task :play => :environment do
   endpoint = Endpoint.create(:url => 'http://dbpedia.org/sparql', :title => 'DBpedia')
   
-  idea = Idea.create(:title => 'Recommend artists that come from the same place')
+  idea = Idea.create(:title => 'Artists from the same place')
   idea.canned_queries.create(
-    :title => 'foo',
+    :title => 'using dbpedia:homeTown',
     :endpoint => endpoint,
     :sparql => %[
       SELECT ?input_name, ?output_name, ?place_name
@@ -20,4 +20,30 @@ task :play => :environment do
     ],
     :template => '<%= result[0] %> and <%= result[1] %> are both based in <%= result[2] %>'
   )
+  
+  idea = Idea.create(:title => 'Artists signed to the same independent record label')
+  idea.canned_queries.create(
+    :title => 'using dbpedia#label',
+    :endpoint => endpoint,
+    :sparql => %[
+      SELECT ?input_name, ?output_name, ?label_name, ?abstract WHERE {
+              @INPUT
+                <http://dbpedia.org/ontology/label> ?label ;
+                <http://dbpedia.org/property/name> ?input_name .
+              ?OUTPUT
+                 <http://dbpedia.org/ontology/label> ?label ;
+                <http://dbpedia.org/property/name> ?output_name .
+              ?label
+                <http://xmlns.com/foaf/0.1/name> ?label_name ;
+                a <http://dbpedia.org/class/yago/IndependentRecordLabels> ;
+                <http://dbpedia.org/property/abstract> ?abstract .
+              FILTER (
+                (@INPUT != ?OUTPUT) &&
+                (langMatches(lang(?abstract), 'en') || lang(?abstract) = '' )
+              )
+            }
+     ],
+    :template => '<%= result[0] %> and <%= result[1] %> were both signed on <%= result[2] %>. <%= result[3] %>'
+  )
+  
 end
