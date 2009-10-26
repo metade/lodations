@@ -27,7 +27,7 @@ task :play => :environment do
     :title => 'using dbpedia#label',
     :endpoint => endpoint,
     :sparql => %[
-      SELECT ?input_name, ?output_name, ?label_name, ?abstract WHERE {
+      SELECT ?input_name, ?OUTPUT, ?output_name, ?label_name, ?abstract WHERE {
               @INPUT
                 <http://dbpedia.org/ontology/label> ?label ;
                 <http://dbpedia.org/property/name> ?input_name .
