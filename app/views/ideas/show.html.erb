@@ -1,0 +1,16 @@
+<h1><%=h @idea.title %></h1>
+
+<p>
+  <b>Description:</b>
+  <%=h @idea.description %>
+</p>
+
+<h2>Queries</h2>
+
+<%= render(:partial => 'canned_queries/queries', :object => @idea.canned_queries )%>
+
+<p><%= link_to 'Create a new query', new_idea_canned_query_path(@idea) %></p>
+
+
+<%= link_to 'Edit', edit_idea_path(@idea) %> |
+<%= link_to 'Back', ideas_path %>

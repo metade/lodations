@@ -1,0 +1,11 @@
+<h1>Editing query</h1>
+
+<% form_for(@query, :url => idea_canned_query_path(@idea, @query), :html => { :method => :put }) do |f| %>
+  <%= render(:partial => 'canned_queries/form', :object => f)%>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', idea_canned_query_path(@query.idea, @query) %> |
+<%= link_to 'Back', idea_canned_queries_path(@query.idea) %>

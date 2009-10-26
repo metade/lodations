@@ -1,6 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
-  # The priority is based upon order of creation: first created -> highest priority.
+  map.resources :endpoints
 
+  # The priority is based upon order of creation: first created -> highest priority.
+  
+  map.resources :ideas do |idea|
+    idea.resources :canned_queries
+  end
+  
+  map.resources :resources, :requirements => { :id => /(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(([0-9]{1,5})?\/.*)?/ix
+  }
+  
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
   # Keep in mind you can assign values other than :controller and :action

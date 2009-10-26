@@ -1,0 +1,20 @@
+<h1>Listing endpoints</h1>
+
+<table>
+  <tr>
+    <th>Url</th>
+  </tr>
+
+<% @endpoints.each do |endpoint| %>
+  <tr>
+    <td><%=h endpoint.url %></td>
+    <td><%= link_to 'Show', endpoint %></td>
+    <td><%= link_to 'Edit', edit_endpoint_path(endpoint) %></td>
+    <td><%= link_to 'Destroy', endpoint, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New endpoint', new_endpoint_path %>

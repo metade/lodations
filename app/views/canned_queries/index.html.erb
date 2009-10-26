@@ -1,0 +1,20 @@
+<h1>Listing queries</h1>
+
+<table>
+  <tr>
+    <th>Sparql</th>
+  </tr>
+
+<% @queries.each do |query| %>
+  <tr>
+    <td><%=h query.sparql %></td>
+    <td><%= link_to 'Show', query %></td>
+    <td><%= link_to 'Edit', edit_query_path(query) %></td>
+    <td><%= link_to 'Destroy', query, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New query', new_query_path %>

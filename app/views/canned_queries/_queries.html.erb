@@ -1,0 +1,5 @@
+<ul>
+  <% queries.each do |query| %>
+  <li><%= link_to(query.title, idea_canned_query_path(query.idea, query)) %></li>
+  <% end %>
+</ul>
