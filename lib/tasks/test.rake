@@ -1,6 +1,7 @@
 
 task :play => :environment do
   endpoint = Endpoint.create(:url => 'http://dbpedia.org/sparql', :title => 'DBpedia')
+  Endpoint.create(:url => 'http://api.talis.com/stores/bbc-backstage/services/sparql', :title => 'Talis BBC Music/Programmes')
   
   idea = Idea.create(:title => 'Artists from the same place')
   idea.canned_queries.create(

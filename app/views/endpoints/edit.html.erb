@@ -1,12 +1,7 @@
 <h1>Editing endpoint</h1>
 
 <% form_for(@endpoint) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :url %><br />
-    <%= f.text_field :url %>
-  </p>
+  <%= render :partial => 'form', :object => f %>
   <p>
     <%= f.submit 'Update' %>
   </p>

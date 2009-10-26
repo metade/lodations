@@ -1,8 +1,10 @@
+<h1><%= @endpoint.title %></h1>
 <p>
   <b>Url:</b>
-  <%=h @endpoint.url %>
+  <%= link_to @endpoint.url, @endpoint.url %>
 </p>
-
+<p><b>Queries:</p></p>
+<%= render(:partial => 'canned_queries/queries', :object => @endpoint.canned_queries )%>
 
 <%= link_to 'Edit', edit_endpoint_path(@endpoint) %> |
 <%= link_to 'Back', endpoints_path %>
