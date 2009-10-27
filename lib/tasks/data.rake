@@ -101,6 +101,31 @@ namespace :data do
       ],
       :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> are both based in <%= result[5] %>'
     )
+    idea.canned_queries.create(
+      :title => 'using dbpedia:birthPlace for english cities',
+      :endpoint => endpoint,
+      :sparql => %[
+        SELECT ?source ?source_name ?destination ?destination_name ?place ?place_name
+        WHERE {
+          ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+          ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+          ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+          ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
+
+          ?dbpedia_source <http://dbpedia.org/property/birthPlace> ?place .
+          ?dbpedia_destination <http://dbpedia.org/property/birthPlace> ?place .
+
+          ?place <http://www.w3.org/2000/01/rdf-schema#label> ?place_name .
+          ?place a <http://dbpedia.org/class/yago/CitiesInEngland> .
+
+          FILTER (
+            (?source != ?destination) &&
+            ( langMATCHES( lang(?place_name), 'en') )
+          )
+        }
+      ],
+      :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> were both born in <%= result[5] %>'
+    )
   end
 
   task :independent_record_label => :environment do
