@@ -19,10 +19,11 @@ class MusicController < ApplicationController
         div = (doc/'//div#bbc_related_content').first
         div.children.first.before %[
           <div class="container" id="recommendations">
-          <h2>Recommendations</h2>
+          <h2><a href="/">LODations</a> Recommendations</h2>
               <ul id="links-list">
                   #{ recommendations.map { |r| "<li>#{r.message}</li>" } } 
               </ul>
+              <p class="box disclaimer mb_font">These recommendations are generated using Linked Data with <a href="/">LODations</a>.</p>
           </div>
         ]
       end
