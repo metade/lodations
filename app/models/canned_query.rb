@@ -7,7 +7,7 @@ class CannedQuery < ActiveRecord::Base
   def execute
     recommendations.clear
     
-    results = endpoint.execute(sparql)
+    results = endpoint.execute(sparql + " LIMIT #{SPARQL_LIMIT}")
     results.each do |result|
       s_uri, s_name, d_uri, d_name = result[0].uri, result[1], result[2].uri, result[3]
       source = Resource.setup_by_uri_and_name(s_uri, s_name)
@@ -27,5 +27,4 @@ class CannedQuery < ActiveRecord::Base
   def link_to(name, link)
     %[<a href="#{link}">#{name}</a>]
   end
-  
 end
