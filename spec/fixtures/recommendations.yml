@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  query_id: 1
+  source_id: 1
+  destination_id: 1
+
+two:
+  query_id: 1
+  source_id: 1
+  destination_id: 1

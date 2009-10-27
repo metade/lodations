@@ -9,13 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091025204850) do
+ActiveRecord::Schema.define(:version => 20091027123233) do
 
   create_table "canned_queries", :force => true do |t|
     t.integer  "idea_id"
     t.integer  "endpoint_id"
     t.string   "title"
-    t.string   "sparql"
+    t.text     "sparql"
     t.string   "template"
     t.string   "variables"
     t.datetime "created_at"
@@ -32,6 +32,22 @@ ActiveRecord::Schema.define(:version => 20091025204850) do
   create_table "ideas", :force => true do |t|
     t.string   "title"
     t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "recommendations", :force => true do |t|
+    t.integer  "canned_query_id"
+    t.integer  "source_id"
+    t.integer  "destination_id"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resources", :force => true do |t|
+    t.string   "uri"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
