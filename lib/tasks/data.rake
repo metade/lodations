@@ -137,7 +137,7 @@ namespace :data do
   
   task :britpop_artists => :environment do
     endpoint = Endpoint.find_by_url('http://api.talis.com/stores/bbc-backstage/services/sparql')
-    idea = Idea.find_by_title('Artist who have used the same session artists')
+    idea = Idea.find_by_title('Britpop bands')
     idea.canned_queries.create(
       :title => 'just using resource/Britpop',
       :endpoint => endpoint,
