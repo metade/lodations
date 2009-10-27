@@ -71,15 +71,15 @@ class IdeasController < ApplicationController
     end
   end
 
-  # DELETE /ideas/1
-  # DELETE /ideas/1.xml
-  def destroy
-    @idea = Idea.find(params[:id])
-    @idea.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(ideas_url) }
-      format.xml  { head :ok }
-    end
-  end
+  # # DELETE /ideas/1
+  # # DELETE /ideas/1.xml
+  # def destroy
+  #   @idea = Idea.find(params[:id])
+  #   @idea.destroy
+  # 
+  #   respond_to do |format|
+  #     format.html { redirect_to(ideas_url) }
+  #     format.xml  { head :ok }
+  #   end
+  # end
 end
