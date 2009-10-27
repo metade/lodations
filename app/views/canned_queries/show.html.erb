@@ -9,5 +9,13 @@
   <pre><%=h @query.template %></pre>
 </p>
 
+<p>
+  <b>Example Recommendations:</b>
+  <ul>
+    <% @query.best_recommendations.each do |recommendation| %>
+      <li><%= link_to_resource(recommendation.source) %> -> <%= link_to_resource(recommendation.destination) %>: <%= recommendation.message %></li>
+    <% end %>
+  </ul>
+
 <%= link_to 'Edit', edit_idea_canned_query_path(@idea, @query) %> |
 <%= link_to 'Back', idea_path(@idea) %>

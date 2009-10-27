@@ -33,9 +33,40 @@ task :place => :environment do
         FILTER (?place_type != <http://dbpedia.org/ontology/Country> && ?place_type != <http://dbpedia.org/class/yago/Country108544813>)
         FILTER (?source != ?destination)
         FILTER ( langMATCHES( lang(?place_name), 'en'))
-      } 
-      LIMIT 100
+      }
+      LIMIT 1000
     ],
     :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> are both based in <%= result[5] %>'
   )
 end
+
+task :independent_record_label => :environment do
+  endpoint = Endpoint.find_by_url('http://api.talis.com/stores/bbc-backstage/services/sparql')
+  idea = Idea.create(:title => 'Artists signed to the same independent record label')
+  idea.canned_queries.create(
+    :title => 'using dbpedia:label',
+    :endpoint => endpoint,
+    :sparql => %[
+      SELECT ?source ?source_name ?destination ?destination_name ?label ?label_name WHERE {
+        ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+        ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+        ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+        ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
+
+        ?dbpedia_source <http://dbpedia.org/ontology/label> ?label .
+        ?dbpedia_destination <http://dbpedia.org/ontology/label> ?label .
+
+        ?label 
+          a <http://dbpedia.org/class/yago/IndependentRecordLabels> ;
+          <http://xmlns.com/foaf/0.1/name> ?label_name ;
+
+        FILTER (
+          (?source != ?destination)
+        )
+      }
+      LIMIT 1000
+    ],
+    :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> were both signed on <%= result[5] %>'
+  )
+end
+  

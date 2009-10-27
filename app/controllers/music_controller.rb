@@ -12,23 +12,19 @@ class MusicController < ApplicationController
     (doc/'//img').each { |img| img['src'] = "http://www.bbc.co.uk#{img['src']}"}
     (doc/'//script').each { |script| script['src'] = "http://www.bbc.co.uk#{script['src']}" if script['src'] =~ %r[^/] }
   
-    if path =~ %r[artists/[\w-]+$]
-      wikipedia = (doc/'//a').find { |a| a['href'] =~ %r[http://en.wikipedia.org/wiki/(.+)] }
-      if wikipedia
-        resource = RDFS::Resource.new("http://dbpedia.org/resource/#{$1}")
-        recommendations = CannedQuery.find(:all).map { |query| query.execute(resource) }.compact
-        
-        if recommendations.any?
-          div = (doc/'//div#bbc_related_content').first
-          div.children.first.before %[
-            <div class="container" id="recommendations">
-            <h2>Recommendations</h2>
-                <ul id="links-list">
-                    #{ recommendations.map { |r| "<li>#{r}</li>" } } 
-                </ul>
-            </div>
-          ]
-        end
+    if path =~ %r[artists/([\w-]+)$]
+      gid = $1
+      recommendations = Recommendation.find_by_source_uri("http://www.bbc.co.uk/music/artists/#{gid}#artist")
+      if recommendations.any?
+        div = (doc/'//div#bbc_related_content').first
+        div.children.first.before %[
+          <div class="container" id="recommendations">
+          <h2>Recommendations</h2>
+              <ul id="links-list">
+                  #{ recommendations.map { |r| "<li>#{r.message}</li>" } } 
+              </ul>
+          </div>
+        ]
       end
     end
     
