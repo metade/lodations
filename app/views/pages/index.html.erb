@@ -17,7 +17,20 @@
 
 <p>Browse BBC Music with recommendations added to them, e.g.</p>
 <ul>
-  <% Resource.with_most_recommendations.each do |resource| %>
+  <% if @resources.any? %>
+  <% @resources.each do |resource| %>
     <li><%= link_to_resource(resource) %></li>
+  <% end %>
+  <% else %>
+    <li><a href="/music/artists/bf415dc0-de39-453c-b9b1-baf4844870d0">I Wayne</a></li>
+    <li><a href="/music/artists/be23dca9-50e8-455d-9029-1372b299aff0">Lady Saw</a></li>
+    <li><a href="/music/artists/701260ad-d629-49b7-8cf0-931fb3a391dd">The Twang</a></li>
+    <li><a href="/music/artists/10a9ff92-9637-4498-afea-7044b2ab0dc0">Busta Rhymes</a></li>
+    <li><a href="/music/artists/ac9a487a-d9d2-4f27-bb23-0f4686488345">Lil Wayne</a></li>
+    <li><a href="/music/artists/a6a4c910-2b22-4a6f-aebe-805b176c47b8">Fat Joe</a></li>
+    <li><a href="/music/artists/f0602f55-1770-483d-89bd-4bae0d0ac086">Jennifer Lopez</a></li>
+    <li><a href="/music/artists/f3bf61f8-97d4-4e52-a73d-2ddbbe8196c8">DMX</a></li>
+    <li><a href="/music/artists/25b509ef-48ad-461b-a0bc-94cdddb8c919">Melanie C</a></li>
+    <li><a href="/music/artists/03172286-f7ed-4864-a4db-459cd5ca9790">Ciara</a></li>
   <% end %>
 <ul>

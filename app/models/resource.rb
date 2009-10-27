@@ -3,6 +3,8 @@ class Resource < ActiveRecord::Base
   
   def self.with_most_recommendations
     Resource.find_by_sql('select resources.*, count(distinct canned_query_id) as score from resources join recommendations on source_id=resources.id group by recommendations.source_id order by score desc limit 10;')
+    rescue
+      []
   end
   
   def self.setup_by_uri_and_name(uri, name)
