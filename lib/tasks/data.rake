@@ -8,6 +8,7 @@ namespace :data do
     Idea.create(:title => 'Artists from the same place')
     Idea.create(:title => 'Artists signed to the same independent record label')
     Idea.create(:title => 'Britpop bands')
+    Idea.create(:title => 'Artists sharing video directors')
     Idea.create(:title => 'Artists with interesting genres')
     Idea.create(:title => 'artists born in the same year?')
     Idea.create(:title => 'artists born on the same day?')
@@ -161,6 +162,36 @@ namespace :data do
     )
   end
   
-  task :queries => [:place, :independent_record_label, :session_artists, :britpop_artists]
+  task :artists_sharing_video_directors => :environment do
+    endpoint = Endpoint.find_by_url('http://api.talis.com/stores/bbc-backstage/services/sparql')
+    idea = Idea.find_by_title('Artists sharing video directors')
+    idea.canned_queries.create(
+      :title => 'using the Music_videos_directed_by_ subject',
+      :endpoint => endpoint,
+      :sparql => %[
+        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+        SELECT ?source ?source_name ?destination ?destination_name ?subject WHERE {
+          ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+          ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+          ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+          ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
+
+          ?video <http://dbpedia.org/ontology/artist> ?dbpedia_source .
+          ?video <http://dbpedia.org/ontology/artist> ?dbpedia_destination .
+
+          ?video skos:subject ?subject .
+
+          FILTER (
+            regex(str(?subject), 'Music_videos_directed_by_') &&
+            (?source != ?destination)
+          )
+        }
+      ],
+      :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> have both had videos directed by <%= $1.gsub("_", " ") if result[4].uri =~ /Music_videos_directed_by_(.*)/ %>'
+    )
+  end
+  
+  task :queries => [:place, :independent_record_label, :session_artists, :britpop_artists, :artists_sharing_video_directors]
   task :load => [:endpoints, :ideas, :queries]
 end
