@@ -78,7 +78,36 @@ namespace :data do
       :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> were both signed on <%= result[5] %>'
     )
   end
+  
+  task :session_artists => :environment do
+    endpoint = Endpoint.find_by_url('http://api.talis.com/stores/bbc-backstage/services/sparql')
+    idea = Idea.find_by_title('Artist who have used the same session artists')
+    idea.canned_queries.create(
+      :title => 'using dbpedia:associatedBand',
+      :endpoint => endpoint,
+      :sparql => %[
+        SELECT ?source ?source_name ?destination ?destination_name ?associated ?associated_name ?bbc_associated WHERE {
+          ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+          ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+          ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+          ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
 
-  task :queries => [:place, :independent_record_label]
+          ?dbpedia_source <http://dbpedia.org/ontology/associatedBand> ?associated .
+          ?dbpedia_destination <http://dbpedia.org/ontology/associatedBand> ?associated .
+
+          ?associated <http://xmlns.com/foaf/0.1/name> ?associated_name .
+          OPTIONAL { ?bbc_associated <http://www.w3.org/2002/07/owl#sameAs> ?associated . }
+
+          FILTER (
+            (?source != ?destination) &&
+            regex(str(?bbc_associated), '^http://www.bbc.co.uk')
+          )
+        }
+      ],
+      :template => %[<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> have both been associated with <%= result[6].nil? ? result[5] : link_to(result[5], result[6].uri.gsub('http://www.bbc.co.uk','').gsub('#artist', '')) %>]
+    )
+  end
+
+  task :queries => [:place, :independent_record_label, :session_artists]
   task :load => [:endpoints, :ideas, :queries]
 end

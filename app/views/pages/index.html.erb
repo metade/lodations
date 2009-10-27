@@ -17,5 +17,7 @@
 
 <p>Browse BBC Music with recommendations added to them, e.g.</p>
 <ul>
-  <li></li>
+  <% Resource.with_most_recommendations.each do |resource| %>
+    <li><%= link_to_resource(resource) %></li>
+  <% end %>
 <ul>
