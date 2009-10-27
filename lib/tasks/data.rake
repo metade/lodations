@@ -7,6 +7,8 @@ namespace :data do
   task :ideas => :environment do
     Idea.create(:title => 'Artists from the same place')
     Idea.create(:title => 'Artists signed to the same independent record label')
+    Idea.create(:title => 'Britpop bands')
+    Idea.create(:title => 'Artists with interesting genres')
     Idea.create(:title => 'artists born in the same year?')
     Idea.create(:title => 'artists born on the same day?')
     Idea.create(:title => 'artists who played the same venues or festival?', :description => 'eg woodstock')
@@ -41,6 +43,31 @@ namespace :data do
 
           FILTER (
             (?place != <http://dbpedia.org/resource/France> && ?place != <http://dbpedia.org/resource/United_States>) &&
+            (?source != ?destination) &&
+            ( langMATCHES( lang(?place_name), 'en') )
+          )
+        }
+      ],
+      :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> are both based in <%= result[5] %>'
+    )
+    idea.canned_queries.create(
+      :title => 'using dbpedia:homeTown for english cities',
+      :endpoint => endpoint,
+      :sparql => %[
+        SELECT ?source ?source_name ?destination ?destination_name ?place ?place_name
+        WHERE {
+          ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+          ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+          ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+          ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
+
+          ?dbpedia_source <http://dbpedia.org/ontology/homeTown> ?place .
+          ?dbpedia_destination <http://dbpedia.org/ontology/homeTown> ?place .
+
+          ?place <http://www.w3.org/2000/01/rdf-schema#label> ?place_name .
+          ?place a <http://dbpedia.org/class/yago/CitiesInEngland> .
+
+          FILTER (
             (?source != ?destination) &&
             ( langMATCHES( lang(?place_name), 'en') )
           )
@@ -104,10 +131,36 @@ namespace :data do
           )
         }
       ],
-      :template => %[<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> have both been associated with <%= result[6].nil? ? result[5] : link_to(result[5], result[6].uri.gsub('http://www.bbc.co.uk','').gsub('#artist', '')) %>]
+      :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> have both been associated with <%= result[6].nil? ? result[5] : link_to(result[5], result[6].uri.gsub("http://www.bbc.co.uk","").gsub("#artist", "")) %>'
     )
   end
+  
+  task :britpop_artists => :environment do
+    endpoint = Endpoint.find_by_url('http://api.talis.com/stores/bbc-backstage/services/sparql')
+    idea = Idea.find_by_title('Artist who have used the same session artists')
+    idea.canned_queries.create(
+      :title => 'just using resource/Britpop',
+      :endpoint => endpoint,
+      :sparql => %[
+        SELECT ?source ?source_name ?destination ?destination_name
+        WHERE {
+          ?source <http://xmlns.com/foaf/0.1/name> ?source_name .
+          ?source <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_source .
+          ?destination <http://xmlns.com/foaf/0.1/name> ?destination_name .
+          ?destination <http://www.w3.org/2002/07/owl#sameAs> ?dbpedia_destination .
 
-  task :queries => [:place, :independent_record_label, :session_artists]
+          ?dbpedia_source <http://dbpedia.org/ontology/genre> <http://dbpedia.org/resource/Britpop> .
+          ?dbpedia_destination <http://dbpedia.org/ontology/genre> <http://dbpedia.org/resource/Britpop> .
+
+          FILTER (
+            (?source != ?destination)
+          )
+        }
+      ],
+      :template => '<%= source.name %> and <%= link_to(destination.name, "/music/artists/#{destination.gid}") %> were both Britpop artists.'
+    )
+  end
+  
+  task :queries => [:place, :independent_record_label, :session_artists, :britpop_artists]
   task :load => [:endpoints, :ideas, :queries]
 end
