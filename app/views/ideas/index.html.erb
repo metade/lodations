@@ -3,11 +3,13 @@
 <table>
   <tr>
     <th>Title</th>
+    <th>Queries</th>
   </tr>
 
 <% @ideas.each do |idea| %>
   <tr>
     <td><%= link_to idea.title, idea %></td>
+    <td><%= idea.canned_queries.any? ? idea.canned_queries.size : '' %></td>
     <td><%= link_to 'Edit', edit_idea_path(idea) %></td>
     <td><%= link_to 'Destroy', idea, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
